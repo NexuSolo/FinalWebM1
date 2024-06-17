@@ -39,3 +39,6 @@ yarn-error.log
 
 .npmrc
 pnpm-lock.yaml
+
+#dist
+/dist
