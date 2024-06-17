@@ -1,4 +1,4 @@
-import { Args, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { MessageService } from './message.service';
 import { Message } from './models/message.model';
 
@@ -7,8 +7,13 @@ export class MessageResolver {
 
     constructor(private messageService: MessageService) {}
 
+    @Mutation(of => Message)
+    async createUser(@Args('text') text: string) {
+        return this.messageService.createMessage(text);
+    }
+
     @Query(returns => [Message])
-    async messages() {
-        return this.messageService.findAll();
+    async getAllMessages() {
+        return this.messageService.getAllMessages();
     }
 }

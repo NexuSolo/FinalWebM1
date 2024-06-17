@@ -8,6 +8,11 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
 import { MessageResolver } from './message/message.resolver';
 import { MessageService } from './message/message.service';
+import { UtilisateurService } from './utilisateur/utilisateur.service';
+import { UtilisateurResolver } from './utilisateur/utilisateur.resolver';
+import { ConversationResolver } from './conversation/conversation.resolver';
+import { ConversationService } from './conversation/conversation.service';
+import { RedisModule } from '@nestjs-modules/ioredis';
 
 @Module({
   imports: [
@@ -27,6 +32,6 @@ import { MessageService } from './message/message.service';
     }),
   ],
   controllers: [AppController],
-  providers: [AppService, AppConsumer, MessageResolver, MessageService],
+  providers: [AppService, AppConsumer, MessageResolver, MessageService, UtilisateurService, UtilisateurResolver, ConversationResolver, ConversationService],
 })
 export class AppModule {}

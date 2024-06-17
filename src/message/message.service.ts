@@ -1,14 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { Message } from './models/message.model';
 
 @Injectable()
 export class MessageService {
 
-    findAll() {
-        return [
-            {
-                id: 1,
-                test: 'test'
-            }
-        ];
+    messages: Message[] = [];
+
+    createMessage(text: string) {
+        const message = {
+            id: this.messages.length + 1,
+            text
+        };
+    }
+
+    getAllMessages() {
+        return this.messages;
     }
 }
