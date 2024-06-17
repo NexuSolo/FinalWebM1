@@ -26,7 +26,7 @@ Pour commencer avec NestJS, il faut installer le CLI de NestJS globalement sur v
 
 Une fois le projet créé, la structure des dossiers ressemble à ceci :
 
-```
+```css
 project-name/
 │
 ├── src/
@@ -47,65 +47,13 @@ project-name/
 └── tsconfig.json
 ```
 
-### Description des fichiers principaux
-
 - **main.ts** : Le point d'entrée de l'application. Il initialise le module racine.
 
-  ```typescript
-  import { NestFactory } from '@nestjs/core';
-  import { AppModule } from './app.module';
+- **app.module.ts** : Il peut importer d'autres modules, et il déclare les contrôleurs et les fournisseurs (services).
 
-  async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-    await app.listen(3000);
-  }
-  bootstrap();
-  ```
+- **app.controller.ts** : Les contrôleurs gèrent les requêtes entrantes et renvoient les réponses aux clients.
 
-- **app.module.ts** : Le module racine de l'application. Il peut importer d'autres modules, et il déclare les contrôleurs et les fournisseurs (services).
-
-  ```typescript
-  import { Module } from '@nestjs/common';
-  import { AppController } from './app.controller';
-  import { AppService } from './app.service';
-
-  @Module({
-    imports: [],
-    controllers: [AppController],
-    providers: [AppService],
-  })
-  export class AppModule {}
-  ```
-
-- **app.controller.ts** : Un exemple de contrôleur. Les contrôleurs gèrent les requêtes entrantes et renvoient les réponses aux clients.
-
-  ```typescript
-  import { Controller, Get } from '@nestjs/common';
-  import { AppService } from './app.service';
-
-  @Controller()
-  export class AppController {
-    constructor(private readonly appService: AppService) {}
-
-    @Get()
-    getHello(): string {
-      return this.appService.getHello();
-    }
-  }
-  ```
-
-- **app.service.ts** : Un exemple de service. Les services contiennent la logique métier et peuvent être injectés dans les contrôleurs ou d'autres services.
-
-  ```typescript
-  import { Injectable } from '@nestjs/common';
-
-  @Injectable()
-  export class AppService {
-    getHello(): string {
-      return 'Hello World!';
-    }
-  }
-  ```
+- **app.service.ts** : Les services contiennent la logique métier et peuvent être injectés dans les contrôleurs ou d'autres services.
 
 ## 3. Architecture Modulaire
 
@@ -120,56 +68,6 @@ nest generate module users
 ```
 
 Cela génère un nouveau module dans le dossier `src/users`.
-
-### Exemple d'un module
-
-Supposons que nous avons un module `Users` :
-
-- **users.module.ts** :
-
-  ```typescript
-  import { Module } from '@nestjs/common';
-  import { UsersService } from './users.service';
-  import { UsersController } from './users.controller';
-
-  @Module({
-    providers: [UsersService],
-    controllers: [UsersController],
-  })
-  export class UsersModule {}
-  ```
-
-- **users.service.ts** :
-
-  ```typescript
-  import { Injectable } from '@nestjs/common';
-
-  @Injectable()
-  export class UsersService {
-    private readonly users = [{ id: 1, name: 'John Doe' }];
-
-    findAll(): any[] {
-      return this.users;
-    }
-  }
-  ```
-
-- **users.controller.ts** :
-
-  ```typescript
-  import { Controller, Get } from '@nestjs/common';
-  import { UsersService } from './users.service';
-
-  @Controller('users')
-  export class UsersController {
-    constructor(private readonly usersService: UsersService) {}
-
-    @Get()
-    findAll(): any[] {
-      return this.usersService.findAll();
-    }
-  }
-  ```
 
 Pour utiliser ce module dans l'application, vous devez l'importer dans le module racine (AppModule) :
 
@@ -252,7 +150,6 @@ GraphQL rend les API plus flexibles et efficaces, mais ajoute de la complexité 
 # Avantages de mixer Nest avec GraphQL et REDIS
 
 Utiliser NestJS avec GraphQL et Redis présente plusieurs avantages, offrant une combinaison puissante pour le développement d'applications web modernes.
-
 
 ### 1. **Redis : Performance et Caching**
 
