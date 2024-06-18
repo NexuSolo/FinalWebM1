@@ -10,7 +10,7 @@ import { Queue } from 'bull';
 export class MessageService {
     lastid = 0;
 
-    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, @InjectQueue('messages') private messagesQueue : Queue) {}
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
     async createMessage(userId : number, content : string) {
         const message = new Message();
@@ -18,7 +18,7 @@ export class MessageService {
         message.user = new Utilisateur();
         message.user.id = userId;
         message.text = content;
-        const job = await this.messagesQueue.add(message);
+        // const job = await this.messagesQueue.add(message);
         // this.cacheManager.set(message.id.toString(), message, 0);
         return message;
     }

@@ -5,11 +5,11 @@ import { Queue } from 'bull';
 @Injectable()
 export class AppService {
 
-  constructor(@InjectQueue('messages') private healthQueue : Queue) {}
+  // constructor(@InjectQueue('messages') private healthQueue : Queue) {}
 
-  async getHello(): Promise<string> {
-    const job = await this.healthQueue.add({ test: 'test' });
-    return `Hello World! Job ID: ${job.id}`;
+  async getHello() {
+    // const job = await this.healthQueue.add({ test: 'test' });
+    // return `Hello World! Job ID: ${job.id}`;
   }
 
 }
