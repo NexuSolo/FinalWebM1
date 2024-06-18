@@ -2,6 +2,14 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Conversation {
+  id: ID!
+  messages: [Message!]!
+  name: String!
+  user1: Utilisateur!
+  user2: Utilisateur!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -15,12 +23,13 @@ type Message {
 }
 
 type Mutation {
-  createUser(username: String!): Utilisateur!
+  createConversation(user1: Float!, user2: Float!): Conversation!
+  createMessage(text: String!, userId: Float!): Message!
 }
 
 type Query {
-  getAllUsers: [Utilisateur!]!
-  messages: [Message!]!
+  getAllConversationsByUser: [Conversation!]!
+  getMessagesByConversation(conversationId: Float!): [Message!]!
 }
 
 type Utilisateur {

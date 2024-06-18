@@ -1,22 +1,21 @@
-import { Injectable } from '@nestjs/common';
-import { Utilisateur } from './models/utilisateur.model';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
 
 @Injectable()
 export class UtilisateurService {
 
-    utilisateurs: Utilisateur[] = [];
+    lastid = 0;
+
+    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
     async createUser(username: string) {
-        const utilisateur = {
-            id: this.utilisateurs.length + 1,
-            username
-        };
-        this.utilisateurs.push(utilisateur);
-        return utilisateur;
+
     }
 
     async findAll() {
-        return this.utilisateurs;
+
     }
+
 }
 

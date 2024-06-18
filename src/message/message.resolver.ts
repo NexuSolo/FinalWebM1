@@ -8,12 +8,8 @@ export class MessageResolver {
     constructor(private messageService: MessageService) {}
 
     @Mutation(of => Message)
-    async createUser(@Args('text') text: string) {
-        return this.messageService.createMessage(text);
+    async createMessage(@Args('text') text: string, @Args('userId') userId: number) {
+        return this.messageService.createMessage(userId, text);
     }
-
-    @Query(returns => [Message])
-    async getAllMessages() {
-        return this.messageService.getAllMessages();
-    }
+    
 }

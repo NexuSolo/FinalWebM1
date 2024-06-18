@@ -4,6 +4,10 @@ import { Utilisateur } from "src/utilisateur/models/utilisateur.model";
 @ObjectType()
 export class Message {
 
+    constructor(userId: number, text: string) {
+        
+    }
+
     @Field(type => ID)
     id: number;
 

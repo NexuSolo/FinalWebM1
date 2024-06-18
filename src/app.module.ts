@@ -12,7 +12,9 @@ import { UtilisateurService } from './utilisateur/utilisateur.service';
 import { UtilisateurResolver } from './utilisateur/utilisateur.resolver';
 import { ConversationResolver } from './conversation/conversation.resolver';
 import { ConversationService } from './conversation/conversation.service';
-import { RedisModule } from '@nestjs-modules/ioredis';
+import { CacheModule } from '@nestjs/cache-manager';
+import { RedisClientOptions } from 'redis';
+import { redisStore } from 'cache-manager-redis-store';
 
 @Module({
   imports: [
@@ -30,6 +32,11 @@ import { RedisModule } from '@nestjs-modules/ioredis';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
+    CacheModule.register<RedisClientOptions>({
+      store: redisStore,
+      host: 'localhost',
+      port: 6379
+    })
   ],
   controllers: [AppController],
   providers: [AppService, AppConsumer, MessageResolver, MessageService, UtilisateurService, UtilisateurResolver, ConversationResolver, ConversationService],

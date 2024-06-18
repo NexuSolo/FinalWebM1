@@ -1,19 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { Message } from './models/message.model';
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
+import { Utilisateur } from 'src/utilisateur/models/utilisateur.model';
 
 @Injectable()
 export class MessageService {
 
-    messages: Message[] = [];
 
-    createMessage(text: string) {
-        const message = {
-            id: this.messages.length + 1,
-            text
-        };
+
+    createMessage(userId : number, content : string) {
+        const message = new Message(userId, content);
+        return message;
     }
 
     getAllMessages() {
-        return this.messages;
+
     }
 }
