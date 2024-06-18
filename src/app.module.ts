@@ -25,7 +25,7 @@ import { redisStore } from 'cache-manager-redis-store';
       },
     }),
     BullModule.registerQueue({
-      name: 'health-check'
+      name: 'messages'
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,

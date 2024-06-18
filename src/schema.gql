@@ -16,7 +16,7 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Message {
-  creationDate: DateTime!
+  creationDate: DateTime
   id: ID!
   text: String!
   user: Utilisateur!
@@ -29,6 +29,7 @@ type Mutation {
 
 type Query {
   getAllConversationsByUser: [Conversation!]!
+  getMessage(id: Float!): Message!
   getMessagesByConversation(conversationId: Float!): [Message!]!
 }
 

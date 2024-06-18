@@ -11,5 +11,10 @@ export class MessageResolver {
     async createMessage(@Args('text') text: string, @Args('userId') userId: number) {
         return this.messageService.createMessage(userId, text);
     }
+
+    @Query(returns => Message)
+    async getMessage(@Args('id') id: number) {
+        return this.messageService.getAllMessages(id);
+    }
     
 }
