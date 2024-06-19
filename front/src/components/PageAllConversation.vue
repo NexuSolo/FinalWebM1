@@ -5,7 +5,9 @@
                 <div class="nomConversation" @click=chooseConversation(conversation)>
                     {{ conversation.user2.username }}
                 </div>
-
+            </div>
+            <div class="nomConversation">
+                <RouterLink class="new" to="/new">+</RouterLink>
             </div>
 
         </div>
@@ -170,7 +172,7 @@ export default {
         chooseConversation(conversation) {
             this.messages = conversation.messages;
             this.otherUser = conversation.user2;
-        }
+        },
     },
 
 
@@ -183,8 +185,15 @@ export default {
 
 <style scoped>
 
+.new{
+    font-size: 2em;
+    color: black;
+    text-decoration: none;
 
-.otherUser{
+}
+
+
+.otherUser {
     text-align: center;
     opacity: 0.5;
 
