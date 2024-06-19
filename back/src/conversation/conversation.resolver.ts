@@ -9,7 +9,7 @@ export class ConversationResolver {
 
     @Query(returns => [Conversation])
     async getAllConversationsByUser(@Args('userId') userId: string) {
-        return this.conversationService.getConversatinByUser(userId);
+        return this.conversationService.getConversationByUser(userId);
     }
 
     @Mutation(of => Conversation)
