@@ -1,20 +1,28 @@
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { Cache } from 'cache-manager';
+import { Utilisateur } from './models/utilisateur.model';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class UtilisateurService {
-
-    lastid = 0;
-
-    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
-
-    async createUser(username: string) {
-
+    
+    constructor(private readonly prisma: PrismaService) {}
+    
+    createUser(username: string): Promise<Utilisateur> {
+        return this.prisma.user.create({
+            data: {
+                username
+            }
+        })
     }
 
-    async findAll() {
-
+    getUtilisateurById(id: string) : Promise<Utilisateur> {
+        return this.prisma.user.findUnique({
+            where: {
+                id
+            }
+        })
     }
 
 }

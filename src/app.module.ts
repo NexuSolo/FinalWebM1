@@ -1,8 +1,5 @@
 import { Global, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { BullModule } from '@nestjs/bull';
-import { AppConsumer } from './app.consumer';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
@@ -14,8 +11,8 @@ import { ConversationResolver } from './conversation/conversation.resolver';
 import { ConversationService } from './conversation/conversation.service';
 import { CacheModule } from '@nestjs/cache-manager';
 import { RedisClientOptions } from 'redis';
-import { redisStore } from 'cache-manager-redis-store';
-import { url } from 'inspector';
+import { DatabaseModule } from './database/database.module';
+import { PrismaService } from './database/prisma.service';
 
 @Global()
 @Module({
@@ -37,9 +34,10 @@ import { url } from 'inspector';
     CacheModule.register<RedisClientOptions>({
       host: 'redis',
       port: 6379
-    })
+    }),
+    DatabaseModule
   ],
-  controllers: [AppController],
-  providers: [AppService, AppConsumer, MessageResolver, MessageService, UtilisateurService, UtilisateurResolver, ConversationResolver, ConversationService],
+  controllers: [],
+  providers: [ MessageResolver, MessageService, UtilisateurService, UtilisateurResolver, ConversationResolver, ConversationService, PrismaService],
 })
 export class AppModule {}

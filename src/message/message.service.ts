@@ -3,31 +3,32 @@ import { Message } from './models/message.model';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Utilisateur } from 'src/utilisateur/models/utilisateur.model';
 import { Cache } from 'cache-manager';
-import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { InjectQueue } from '@nestjs/bull';
+import { UtilisateurService } from 'src/utilisateur/utilisateur.service';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class MessageService {
     lastid = 0;
 
-    constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-    async createMessage(userId : number, content : string) {
-        const message = new Message();
-        message.id = this.lastid++;
-        message.user = new Utilisateur();
-        message.user.id = userId;
-        message.text = content;
-        // const job = await this.messagesQueue.add(message);
-        // this.cacheManager.set(message.id.toString(), message, 0);
-        return message;
-    }
-
-    async getAllMessages(id : number) {
-        return await this.cacheManager.get(id.toString()).then((messages) => {
-            if (messages) {
-                return messages;
+    async createMessage(id : string, text : string, conversationId: string) {
+        return this.prisma.message.create({
+            data: {
+                id,
+                text,
+                conversationId
             }
         })
+        // await this.messagesQueue.add(message);
+        // return message;
     }
+
+    getMessageByConversation(id: string): Promise<Message[]> {
+        //renvoyer tout les messages d'une conversation
+        
+    }
+
 }
