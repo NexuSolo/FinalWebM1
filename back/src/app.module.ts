@@ -9,8 +9,6 @@ import { UtilisateurService } from './utilisateur/utilisateur.service';
 import { UtilisateurResolver } from './utilisateur/utilisateur.resolver';
 import { ConversationResolver } from './conversation/conversation.resolver';
 import { ConversationService } from './conversation/conversation.service';
-import { CacheModule } from '@nestjs/cache-manager';
-import { RedisClientOptions } from 'redis';
 import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma.service';
 
