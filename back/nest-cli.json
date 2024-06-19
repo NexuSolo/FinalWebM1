@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "deleteOutDir": true
+  },
+  "generators": {
+    "service": {
+      "spec": false
+    },
+    "controller": {
+      "spec": false
+    },
+    "module": {
+      "spec": false
+    },
+    "resolver": {
+      "spec": false
+    },
+    "class": {
+      "spec": false
+    }
+  }
+}
