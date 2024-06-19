@@ -14,6 +14,7 @@ export default {
 
 #app{
   font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
 }
 
 
