@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
+import { Conversation } from './models/conversation.model';
 
 @Injectable()
 export class ConversationService {
@@ -9,27 +10,28 @@ export class ConversationService {
     createConversation(userId : string, userId2 : string) {
         return this.prisma.conversation.create({
             data: {
-                userId,
-                userId2
+                users: {
+                    connect: [
+                        {id: userId},
+                        {id: userId2}
+                    ]
+                }
             }
         })
     }
 
-    // getMessageByConversation(id: string): Promise<Conversation> {
-    //     return this.prisma.conversation.findUnique({
-    //         where: {
-    //             id
-    //         }
-    //     }) as Promise<Conversation>;
-    // }
-
     getConversatinByUser(userId: string) {
         return this.prisma.conversation.findMany({
             where: {
-                OR: [
-                    {userId},
-                    {userId2: userId}
-                ]
+                users: {
+                    some: {
+                        id: userId
+                    }
+                }
+            },
+            include: {
+                users: true,
+                messages: true
             }
         })
     }

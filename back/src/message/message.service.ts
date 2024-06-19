@@ -8,21 +8,31 @@ export class MessageService {
 
     constructor(private readonly prisma: PrismaService) {}
 
-    async createMessage(id : string, text : string, conversationId: string) {
+    async createMessage(userId : string, text : string, conversationId: string) {
         return this.prisma.message.create({
             data: {
-                id,
+                userId,
                 text,
                 conversationId
+            },
+            include: {
+                conversation: true,
+                user: true
             }
         })
         // await this.messagesQueue.add(message);
-        // return message;
     }
 
-    // getMessageByConversation(id: string): Promise<Message[]> {
-    //     //renvoyer tout les messages d'une conversation
-        
-    // }
+    async getMessageByConversation(id: string) {
+        return this.prisma.message.findMany({
+            where: {
+                conversationId: id
+            },
+            include: {
+                conversation: true,
+                user: true
+            }
+        })
+    }
 
 }

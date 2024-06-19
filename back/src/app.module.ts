@@ -31,10 +31,6 @@ import { PrismaService } from './database/prisma.service';
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       sortSchema: true,
     }),
-    CacheModule.register<RedisClientOptions>({
-      host: 'redis',
-      port: 6379
-    }),
     DatabaseModule
   ],
   controllers: [],

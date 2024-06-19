@@ -12,9 +12,9 @@ export class MessageResolver {
         return this.messageService.createMessage(userId, text, conversationId);
     }
 
-    // @Query(returns => Message)
-    // async getMessage(@Args('id') id: number) {
-    //     return this.messageService.getAllMessages(id);
-    // }
+    @Query(of => [Message])
+    async getMessageByConversation(@Args('conversationId') conversationId: string) {
+        return this.messageService.getMessageByConversation(conversationId);
+    }
     
 }

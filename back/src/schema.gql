@@ -5,9 +5,7 @@
 type Conversation {
   id: ID!
   messages: [Message!]!
-  name: String!
-  user1: Utilisateur!
-  user2: Utilisateur!
+  users: [Utilisateur!]!
 }
 
 """
@@ -16,21 +14,22 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Message {
-  creationDate: DateTime
+  conversation: Conversation!
+  createdAt: DateTime
   id: ID!
   text: String!
   user: Utilisateur!
 }
 
 type Mutation {
-  createConversation(user1: Float!, user2: Float!): Conversation!
-  createMessage(text: String!, userId: Float!): Message!
+  createConversation(user1: String!, user2: String!): Conversation!
+  createMessage(conversationId: String!, text: String!, userId: String!): Message!
+  createUser(username: String!): Utilisateur!
 }
 
 type Query {
-  getAllConversationsByUser: [Conversation!]!
-  getMessage(id: Float!): Message!
-  getMessagesByConversation(conversationId: Float!): [Message!]!
+  getAllConversationsByUser(userId: String!): [Conversation!]!
+  getMessageByConversation(conversationId: String!): [Message!]!
 }
 
 type Utilisateur {
