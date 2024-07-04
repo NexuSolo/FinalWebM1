@@ -24,7 +24,11 @@ export class ConversationService {
         });
     }
 
-    getConversationByUser(userId: string) {
+    async getConversationByUser(userId: string) {
+        const user = await this.utilisateurService.getUtilisateurById(userId);
+        if (!user) {
+            return null;
+        }
         return this.prisma.conversation.findMany({
             where: {
                 users: {
