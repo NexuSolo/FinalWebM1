@@ -7,13 +7,15 @@ import { Cache } from 'cache-manager';
 
 @Processor('messages')
 export class MessagesProcessor {
+    constructor(
+        @Inject(CACHE_MANAGER) private cacheManager: Cache,
+        private messageService: MessageService
+    ) {}
 
-  constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache, private messageService: MessageService) {}
-
-  @Process()
-  async handleJob(job: Job) {
-    const message = job.data;
-    this.cacheManager.set(message.id.toString(), message, 0);
-    // console.log(`Traitement du message : ${message.text}`);
-  }
+    @Process()
+    async handleJob(job: Job) {
+        const message = job.data;
+        this.cacheManager.set(message.id.toString(), message, 0);
+        // console.log(`Traitement du message : ${message.text}`);
+    }
 }

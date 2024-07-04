@@ -4,25 +4,24 @@ import { UtilisateurService } from '../utilisateur/utilisateur.service';
 
 @Injectable()
 export class ConversationService {
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly utilisateurService: UtilisateurService
+    ) {}
 
-    constructor(private readonly prisma: PrismaService, private readonly utilisateurService: UtilisateurService) {}
-
-    async createConversation(userId : string, userId2 : string) {
+    async createConversation(userId: string, userId2: string) {
         const user1 = await this.utilisateurService.getUtilisateurById(userId);
         const user2 = await this.utilisateurService.getUtilisateurById(userId2);
-        if(!user1 || !user2) {
+        if (!user1 || !user2) {
             return null;
         }
         return this.prisma.conversation.create({
             data: {
                 users: {
-                    connect: [
-                        {id: userId},
-                        {id: userId2}
-                    ]
+                    connect: [{ id: userId }, { id: userId2 }]
                 }
             }
-        })
+        });
     }
 
     getConversationByUser(userId: string) {
@@ -38,7 +37,6 @@ export class ConversationService {
                 users: true,
                 messages: true
             }
-        })
+        });
     }
-
 }

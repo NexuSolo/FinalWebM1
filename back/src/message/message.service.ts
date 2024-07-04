@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { Message } from './models/message.model';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
@@ -8,7 +7,7 @@ export class MessageService {
 
     constructor(private readonly prisma: PrismaService) {}
 
-    async createMessage(userId : string, text : string, conversationId: string) {
+    async createMessage(userId: string, text: string, conversationId: string) {
         return this.prisma.message.create({
             data: {
                 userId,
@@ -19,7 +18,7 @@ export class MessageService {
                 conversation: true,
                 user: true
             }
-        })
+        });
         // await this.messagesQueue.add(message);
     }
 
@@ -32,7 +31,6 @@ export class MessageService {
                 conversation: true,
                 user: true
             }
-        })
+        });
     }
-
 }

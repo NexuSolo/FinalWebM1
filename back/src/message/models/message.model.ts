@@ -1,21 +1,21 @@
-import { Field, ID, ObjectType } from "@nestjs/graphql";
-import { Conversation } from "src/conversation/models/conversation.model";
-import { Utilisateur } from "src/utilisateur/models/utilisateur.model";
+import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { Conversation } from 'src/conversation/models/conversation.model';
+import { Utilisateur } from 'src/utilisateur/models/utilisateur.model';
 
 @ObjectType()
 export class Message {
-    @Field(type => ID)
+    @Field(() => ID)
     id: string;
 
-    @Field(type => Utilisateur)
+    @Field(() => Utilisateur)
     user: Utilisateur;
 
-    @Field(type => String)
+    @Field(() => String)
     text: string;
 
-    @Field(type => Date, { nullable: true })
+    @Field(() => Date, { nullable: true })
     createdAt: Date;
 
-    @Field(type => Conversation)
+    @Field(() => Conversation)
     conversation: Conversation;
 }
