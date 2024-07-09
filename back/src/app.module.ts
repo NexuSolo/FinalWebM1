@@ -11,11 +11,14 @@ import { ConversationResolver } from './conversation/conversation.resolver';
 import { ConversationService } from './conversation/conversation.service';
 import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma.service';
-import { MessageService } from './message/message.service';
+import { CacheModule } from '@nestjs/cache-manager';
 
 @Global()
 @Module({
     imports: [
+        CacheModule.register({
+            ttl: 3600000
+        }),
         BullModule.forRoot({
             redis: {
                 host: 'redis',
