@@ -12,6 +12,7 @@ import { ConversationService } from './conversation/conversation.service';
 import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma.service';
 import { CacheModule } from '@nestjs/cache-manager';
+import { MessageProcessor } from './message/message.processor';
 
 @Global()
 @Module({
@@ -26,7 +27,10 @@ import { CacheModule } from '@nestjs/cache-manager';
             }
         }),
         BullModule.registerQueue({
-            name: 'messages'
+            name: 'messages',
+            redis: {
+                port: 6379
+            }
         }),
         GraphQLModule.forRoot<ApolloDriverConfig>({
             driver: ApolloDriver,
@@ -39,6 +43,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     providers: [
         MessageResolver,
         MessageService,
+        MessageProcessor,
         UtilisateurService,
         UtilisateurResolver,
         ConversationResolver,

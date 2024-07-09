@@ -8,21 +8,12 @@ import { PrismaService } from '../database/prisma.service';
 export class MessageService {
     constructor(
         private readonly prisma: PrismaService,
-        @InjectQueue('messages') private readonly messageQueue: Queue,
+        @InjectQueue('messages') private messageQueue: Queue,
         @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
 
     async createMessage(userId: string, text: string, conversationId: string) {
-        const newMessage = {
-            user: userId,
-            text: text,
-            conversationId: conversationId
-        };
-        this.messageQueue.add(newMessage);
-        const cachedMessages: any[] = (await this.cacheManager.get(conversationId)) || [];
-        const updatedMessages = [...cachedMessages, newMessage];
-        await this.cacheManager.set(conversationId, updatedMessages);
-        return this.prisma.message.create({
+        const result = await this.prisma.message.create({
             data: {
                 userId,
                 text,
@@ -33,6 +24,11 @@ export class MessageService {
                 user: true
             }
         });
+        const cachedMessages: any[] = (await this.cacheManager.get(conversationId)) || [];
+        const updatedMessages = [...cachedMessages, result];
+        await this.cacheManager.set(conversationId, updatedMessages);
+        await this.messageQueue.add(result);
+        return result;
     }
 
     async getMessageByConversation(id: string) {
