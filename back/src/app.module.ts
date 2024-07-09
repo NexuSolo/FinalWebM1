@@ -11,6 +11,7 @@ import { ConversationResolver } from './conversation/conversation.resolver';
 import { ConversationService } from './conversation/conversation.service';
 import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma.service';
+import { MessageService } from './message/message.service';
 
 @Global()
 @Module({

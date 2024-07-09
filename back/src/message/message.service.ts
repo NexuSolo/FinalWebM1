@@ -1,13 +1,22 @@
+import { InjectQueue } from '@nestjs/bull';
 import { Injectable } from '@nestjs/common';
+import { Queue } from 'bull';
 import { PrismaService } from 'src/database/prisma.service';
 
 @Injectable()
 export class MessageService {
-    lastid = 0;
-
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        @InjectQueue('messages') private readonly messageQueue: Queue
+    ) {}
 
     async createMessage(userId: string, text: string, conversationId: string) {
+        const data = {
+            userId,
+            text,
+            conversationId
+        };
+        this.messageQueue.add(data);
         return this.prisma.message.create({
             data: {
                 userId,
@@ -19,7 +28,6 @@ export class MessageService {
                 user: true
             }
         });
-        // await this.messagesQueue.add(message);
     }
 
     async getMessageByConversation(id: string) {
