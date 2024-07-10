@@ -3,6 +3,7 @@ import PageAccueil from './components/PageAccueil.vue'
 import PageConnection from './components/PageConnection.vue'
 import PageAllConversation from './components/PageAllConversation.vue'
 import PageNewConversation from './components/PageNewConversation.vue'
+import PageInscription from './components/PageInscription.vue'
 
 const routes = [
   {
@@ -14,6 +15,11 @@ const routes = [
     path: '/connection',
     name: 'PageConnection',
     component: PageConnection
+  },
+  {
+    path: '/inscription',
+    name: 'PageInscription',
+    component: PageInscription
   },
   {
     path: '/conversations',
