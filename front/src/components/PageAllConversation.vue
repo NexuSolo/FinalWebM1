@@ -2,8 +2,8 @@
     <div class="boxAll">
         <div class="listeConversations">
             <div class="conversations" v-for="(conversation, index) in conversations" :key="index">
-                <div class="nomConversation" @click=chooseConversation(conversation)>
-                    {{ conversation.user2.username }}
+                <div class="nomConversation" @click=chooseConversation(conversation) v-if="conversation.users.length > 1">
+                    {{ this.getUsername(conversation) }}
                 </div>
             </div>
             <div class="nomConversation">
@@ -21,12 +21,12 @@
 
                 <div class="messages" v-for="(message, index) in reversedMessages" :key="index">
 
-                    <div class="messageRight" v-if="message.user == this.user">
-                        {{ message.message }}
+                    <div class="messageRight" v-if="message.authorId == this.userId">
+                        {{ message.text }}
                     </div>
 
                     <div class="messageLeft" v-else>
-                        {{ message.message }}
+                        {{ message.text }}
                     </div>
 
                 </div>
@@ -46,113 +46,21 @@
 </template>
 
 <script>
+import gql from 'graphql-tag';
+import { io } from "socket.io-client";
 
 export default {
-
+    
     data() {
         return {
-
-            // DATABASE FACTICE
-
-            user: {
-                id: 1,
-                username: 'Nicolas',
-            },
-
-            Jean: {
-                id: 2,
-                username: 'Jean',
-            },
-
-            Paul: {
-                id: 3,
-                username: 'Paul',
-            },
-
-            Marie: {
-                id: 4,
-                username: 'Marie',
-            },
-
+            userId: '',
             newMessage: '',
-
             conversations: [],
-
             messages: [],
-
-            otherUser: {},
-
+            otherUser: '',
+            currentConversationId: '',
+            socket: null,
         };
-    },
-
-    created() {
-        this.conversations = [
-            {
-                id: 1,
-                user1: this.user,
-                user2: this.Jean,
-                messages: [
-                    { id: 1, user: this.user, message: 'Salut Jean, comment ça va ?' },
-                    { id: 2, user: this.Jean, message: 'Salut, ça va bien et toi ?' },
-                    { id: 3, user: this.user, message: 'Je vais bien, merci. Quoi de neuf ?' },
-                    { id: 4, user: this.Jean, message: 'Pas grand-chose, juste du travail.' },
-                    { id: 5, user: this.user, message: 'Je comprends, moi aussi.' },
-                    { id: 6, user: this.Jean, message: 'As-tu des plans pour le week-end ?' },
-                    { id: 7, user: this.user, message: 'Pas encore, et toi ?' },
-                    { id: 8, user: this.Jean, message: 'Je pense aller à la plage.' },
-                    { id: 9, user: this.user, message: 'Ça a l\'air sympa !' },
-                    { id: 10, user: this.Jean, message: 'Oui, j\'espère que le temps sera clément.' },
-                    { id: 11, user: this.user, message: 'Je l\'espère aussi pour toi.' },
-                    { id: 12, user: this.Jean, message: 'Merci !' },
-                    { id: 13, user: this.user, message: 'De rien !' },
-                    { id: 14, user: this.Jean, message: 'Je dois y aller maintenant.' },
-                    { id: 15, user: this.user, message: 'D\'accord, à plus tard.' },
-                    { id: 16, user: this.Jean, message: 'À plus tard.' },
-                    { id: 17, user: this.user, message: 'Salut Jean, es-tu là ?' },
-                    { id: 18, user: this.Jean, message: 'Oui, je suis là.' },
-                    { id: 19, user: this.user, message: 'J\'ai une question à te poser.' },
-                    { id: 20, user: this.Jean, message: 'D\'accord, je t\'écoute.' },
-                ],
-            },
-            {
-                id: 2,
-                user1: this.user,
-                user2: this.Paul,
-                messages: [
-                    { id: 1, user: this.user, message: 'Salut Paul, as-tu avancé sur le projet ?' },
-                    { id: 2, user: this.Paul, message: 'Salut, oui, j\'ai fait quelques progrès.' },
-                    { id: 3, user: this.user, message: 'Super, peux-tu me dire ce que tu as fait ?' },
-                    { id: 4, user: this.Paul, message: 'J\'ai terminé la partie front-end.' },
-                    { id: 5, user: this.user, message: 'C\'est génial ! Et pour le back-end ?' },
-                    { id: 6, user: this.Paul, message: 'Je n\'ai pas encore commencé.' },
-                    { id: 7, user: this.user, message: 'D\'accord, je vais m\'en occuper.' },
-                    { id: 8, user: this.Paul, message: 'Merci, ça m\'aiderait beaucoup.' },
-                    { id: 9, user: this.user, message: 'Pas de problème, c\'est ce pour quoi nous sommes une équipe.' },
-                    { id: 10, user: this.Paul, message: 'C\'est vrai. Merci encore.' },
-                    { id: 11, user: this.user, message: 'De rien, je suis heureux de pouvoir aider.' },
-                    { id: 12, user: this.Paul, message: 'Je vais continuer à travailler sur le front-end.' },
-                    { id: 13, user: this.user, message: 'D\'accord, tiens-moi au courant.' },
-                    { id: 14, user: this.Paul, message: 'Je le ferai.' },
-                    { id: 15, user: this.user, message: 'Parfait, à plus tard.' },
-                    { id: 16, user: this.Paul, message: 'À plus tard.' },
-                    { id: 17, user: this.user, message: 'Salut Paul, comment ça se passe ?' },
-                    { id: 18, user: this.Paul, message: 'Salut, tout se passe bien.' },
-                    { id: 19, user: this.user, message: 'Super, continue comme ça.' },
-                    { id: 20, user: this.Paul, message: 'Merci, je vais faire de mon mieux.' },
-                ],
-            },
-            {
-                id: 3,
-                user1: this.user,
-                user2: this.Marie,
-                messages: [
-                    { id: 1, user: this.user, message: 'Salut Marie, comment vas-tu ?' },
-                    { id: 2, user: this.Marie, message: 'Salut, je vais bien et toi ?' },
-                    { id: 3, user: this.user, message: 'Je vais bien, merci. Quoi de neuf ?' },
-                    { id: 4, user: this.Marie, message: 'Pas grand-chose, juste du travail.' },
-                ],
-            }
-        ];
     },
     computed: {
         reversedMessages() {
@@ -160,25 +68,97 @@ export default {
         }
     },
     methods: {
-        addMessage() {
+        getUsername(conversation) {
+            return conversation.users[1].id === this.userId ? conversation.users[0].username : conversation.users[1].username;
+        },
+        async getConversationList() {
+            await this.$apollo.query({
+                query: gql`
+                    query GetAllConversationsByUser($id: String!) {
+                        getAllConversationsByUser(userId: $id) {
+                            id
+                            users {
+                                id
+                                username
+                            }
+                            messages {
+                                createdAt
+                                id
+                                text
+                                authorId
+                            }
+                        }
+                    }
+                    `,
+                variables: {
+                    id: localStorage.getItem('id')
+                }
+            }).then(({ data }) => {
+                this.conversations = data.getAllConversationsByUser;
+            }).catch((error) => {
+                console.error(error);
+            });
+        },
+        async addMessage() {
             if (this.newMessage.trim() !== '') {
-                this.messages.push({
-                    user: this.user,
-                    message: this.newMessage.trim()
+                await this.$apollo.mutate({
+                    mutation: gql`
+                        mutation CreateMessage($conversationId: String!, $text: String!, $userId: String!){
+                            createMessage(
+                                conversationId: $conversationId
+                                text: $text
+                                userId: $userId
+                            ) {
+                                authorId
+                                createdAt
+                                id
+                                text
+                            }
+                        }
+                    `,
+                    variables: {
+                    userId: this.userId,
+                    text: this.newMessage,
+                    conversationId: this.currentConversationId,
+                    }
+                }).then(() => {
+                    this.newMessage = '';
+                    this.getConversationList();
+                    // this.$router.push('/conversations').then(() => {
+                    //     location.reload();
+                    // });
+                }).catch((error) => {
+                    console.error(error);
                 });
-                this.newMessage = '';
             }
         },
         chooseConversation(conversation) {
+            if (this.currentConversationId !== '') {
+                this.socket.off(this.currentConversationId);
+            }
             this.messages = conversation.messages;
-            this.otherUser = conversation.user2;
+            this.currentConversationId = conversation.id;
+            if(conversation.users[0].id == this.userId){
+                this.otherUser = conversation.users[1];
+            } else {
+                this.otherUser = conversation.users[0];
+            }
+            this.socket.on(this.currentConversationId, (data) => {
+                this.messages = [...this.messages, data];
+                console.log(data);
+            });
+            console.log(this.messages);
         },
     },
-
-
+    mounted() {
+        this.socket = io("ws://localhost:3000");
+        this.socket.on("connect", () => {
+            console.log("Connecté au serveur WebSocket");
+        });
+        this.getConversationList();
+        this.userId = localStorage.getItem('userId');
+    },
     name: 'PageAllConversation'
-
-
 }
 
 </script>

@@ -22,8 +22,8 @@ export default {
     }
   },
   methods: {
-    newConv() {
-      this.$apollo.query({
+    async newConv() {
+      await this.$apollo.query({
         query: gql`
                     query GetUtilisateurByUsername($username: String!) {
                         getUtilisateurByUsername(username: $username) {
@@ -36,29 +36,22 @@ export default {
           username: this.username,
         }
       }).then(({ data }) => {
-        // Supposons que votre requête retourne un objet user similaire à ce que faisait la mutation
-        // et que vous avez une logique pour gérer la réponse.
-        console.log(data);
         if (!data) {
-          alert('Nom d\'utilisateur ou mot de passe incorrect');
+          alert('Nom d\'utilisateur inexistant');
           this.username = '';
           return;
         }
-
         this.createNewConv(data.getUtilisateurByUsername.id);
-
-
-        // Supposons que vous avez une méthode pour sauvegarder les données de l'utilisateur
         this.$router.push('/conversations').then(() => {
-          location.reload();
+            location.reload();
         });
-      }).catch(() => {
+      }).catch((error) => {
         console.log("Utilisateur introuvable");
-        // console.error(error);
+        console.error(error);
       });
     },
-    createNewConv(nouveauContact){
-      this.$apollo.mutate({
+    async createNewConv(nouveauContact) {
+      await this.$apollo.mutate({
         mutation: gql`
                     mutation CreateConversation($id: String!, $nouveauContact: String!) {
                         createConversation(

@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     register: async function(){
-        console.log('Name : ' + this.name + ' Password : ' + this.password)
       await this.$apollo.mutate({
         mutation: gql`
                     mutation CreateUser($username: String!, $password: String!) {
@@ -35,7 +34,7 @@ export default {
                     }
                 `,
         variables: {
-          username: this.name, // Assurez-vous d'utiliser `this.name` ici
+          username: this.name,
           password: this.password
         }
       }).then(() => {

@@ -29,7 +29,8 @@ export class MessageService {
             data: {
                 userId,
                 text,
-                conversationId
+                conversationId,
+                authorId: userId
             },
             include: {
                 conversation: true,
@@ -39,7 +40,14 @@ export class MessageService {
         const cachedMessages: any[] = (await this.cacheManager.get(conversationId)) || [];
         const updatedMessages = [...cachedMessages, result];
         await this.cacheManager.set(conversationId, updatedMessages);
-        await this.messageQueue.add(result);
+        const messageSent = {
+            conversationId: conversationId,
+            authorId: result.authorId,
+            createdAt: result.createdAt,
+            id: result.id,
+            text: result.text
+        };
+        await this.messageQueue.add(messageSent);
         return result;
     }
 

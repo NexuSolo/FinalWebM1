@@ -12,7 +12,7 @@ export class ConversationService {
     async createConversation(userId: string, userId2: string) {
         const user1 = await this.utilisateurService.getUtilisateurById(userId);
         const user2 = await this.utilisateurService.getUtilisateurById(userId2);
-        if (!user1 || !user2) {
+        if (!user1 || !user2 || userId === userId2) {
             return null;
         }
         return this.prisma.conversation.create({

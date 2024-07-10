@@ -26,7 +26,7 @@ export default {
       localStorage.clear(); // ou sessionStorage.clear() selon ce que vous utilisez
 
       // Rediriger l'utilisateur vers la page de connexion
-      this.$router.push('/').then(() => {
+      this.$router.push('/connection').then(() => {
           location.reload();
         });
     }

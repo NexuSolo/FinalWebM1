@@ -26,7 +26,6 @@ export class UtilisateurService {
                 password
             }
         });
-        console.log(user);
         if (user != null) {
             return user;
         }

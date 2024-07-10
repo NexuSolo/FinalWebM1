@@ -11,6 +11,9 @@ export class Message {
     user: Utilisateur;
 
     @Field(() => String)
+    authorId: string;
+
+    @Field(() => String)
     text: string;
 
     @Field(() => Date, { nullable: true })

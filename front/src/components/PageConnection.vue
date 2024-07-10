@@ -56,9 +56,10 @@ export default {
                 this.saveUserDate(data.login.id, "VotreTokenIci"); // Remplacer "VotreTokenIci" par la manière dont vous obtenez le token
                 localStorage.setItem('isAuthenticated', true);
                 localStorage.setItem('username', data.login.username);
+                localStorage.setItem('userId', data.login.id);
                 this.$emit('update:isAuthenticated', true);
                 alert(data.login.username + ' est connecté');
-                this.$router.push('/').then(() => {
+                this.$router.push('/conversations').then(() => {
                     location.reload();
                 });
             }).catch((error) => {

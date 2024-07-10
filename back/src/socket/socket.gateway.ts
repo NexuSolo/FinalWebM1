@@ -38,7 +38,12 @@ export class WebsocketsGateway implements OnGatewayInit, OnGatewayConnection, On
 
     @SubscribeMessage('messageToServer')
     handleMessage(client: Socket, payload: any): void {
-        console.log(`Message from client ${client.id}: ${payload}`);
-        this.server.emit(payload.conversationId, payload);
+        const message = {
+            authorId: payload.authorId,
+            createdAt: payload.createdAt,
+            id: payload.id,
+            text: payload.text
+        };
+        this.server.emit(payload.conversationId, message);
     }
 }

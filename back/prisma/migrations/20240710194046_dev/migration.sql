@@ -12,6 +12,7 @@ CREATE TABLE "Message" (
     "id" TEXT NOT NULL,
     "text" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "authorId" TEXT NOT NULL,
     "userId" TEXT NOT NULL,
     "conversationId" TEXT NOT NULL,
 
