@@ -27,6 +27,6 @@ jobs:
       uses: docker/build-push-action@v2
       with:
         context: back/.
-        file: back/dockerfile
+        file: back/Dockerfile
         push: true
         tags: nexusolo/nest:latest
