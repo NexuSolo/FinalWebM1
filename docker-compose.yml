@@ -1,17 +1,23 @@
 services:
   redis:
     image: redis:latest
-    # volumes:
-    #   - /data:/data
-    # command: redis-server --save 60 1 --loglevel warning
     ports:
       - "6379:6379"
-  # back:
-  #   build: .
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - redis
+
+  back:
+    image: nestback
+    ports:
+      - "3000:3000"
+    depends_on:
+      - redis
+      - postgres
+    # Ajoutez un healthcheck pour attendre que PostgreSQL soit prêt
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h postgres -p 5432 -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   postgres:
     image: postgres:latest
     environment:
@@ -20,3 +26,8 @@ services:
       POSTGRES_DB: postgres
     ports:
       - "5431:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5

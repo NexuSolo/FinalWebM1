@@ -42,3 +42,6 @@ pnpm-lock.yaml
 
 #dist
 dist/
+
+#coverage
+coverage/
