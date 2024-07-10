@@ -3,16 +3,28 @@ import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { Inject, Injectable } from '@nestjs/common';
 import { Queue } from 'bull';
 import { PrismaService } from '../database/prisma.service';
+import { UtilisateurService } from '../utilisateur/utilisateur.service';
+import { ConversationService } from '../conversation/conversation.service';
 
 @Injectable()
 export class MessageService {
     constructor(
         private readonly prisma: PrismaService,
+        private readonly utilisateurService: UtilisateurService,
+        private readonly conversationService: ConversationService,
         @InjectQueue('messages') private messageQueue: Queue,
         @Inject(CACHE_MANAGER) private cacheManager: Cache
     ) {}
 
     async createMessage(userId: string, text: string, conversationId: string) {
+        const user = await this.utilisateurService.getUtilisateurById(userId);
+        if (!user) {
+            return null;
+        }
+        const conversation = await this.conversationService.getConversationByUser(userId);
+        if (!conversation.find((c) => c.id === conversationId)) {
+            return null;
+        }
         const result = await this.prisma.message.create({
             data: {
                 userId,
