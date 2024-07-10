@@ -68,6 +68,6 @@
 
     - name: Launch docker compose
       community.docker.docker_compose_v2:
-        project_src: /root/docker-compose.yml
+        project_src: /root
         files:
           - docker-compose.yml
