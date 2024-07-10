@@ -45,3 +45,9 @@ dist/
 
 #coverage
 coverage/
+
+#AWS
+myKey.pem
+
+.env
+
