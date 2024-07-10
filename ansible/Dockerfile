@@ -10,6 +10,8 @@ RUN pip install ansible
 
 RUN pip install boto3 boto jsondiff
 
+RUN ansible-galaxy collection install community.docker
+
 WORKDIR /playbooks
 
 COPY playbook/* ./

@@ -66,5 +66,8 @@
         src: docker-compose.yml
         dest: /root/docker-compose.yml
 
-    - name: Lauch docker compose
-      shell: docker-compose -f /root/docker-compose.yml up -d
+    - name: Launch docker compose
+      community.docker.docker_compose_v2:
+        project_src: /root/docker-compose.yml
+        files:
+          - docker-compose.yml
