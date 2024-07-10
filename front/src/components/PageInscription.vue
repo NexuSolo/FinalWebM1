@@ -26,8 +26,8 @@ export default {
         console.log('Name : ' + this.name + ' Password : ' + this.password)
       await this.$apollo.mutate({
         mutation: gql`
-                    mutation CreateUser {
-                        createUser(username: $name, password: $password) {
+                    mutation CreateUser($username: String!, $password: String!) {
+                        createUser(username: $username, password: $password) {
                             id
                             username
                             password
@@ -39,7 +39,7 @@ export default {
           password: this.password
         }
       }).then(() => {
-        this.$router.push('/connexion');
+        this.$router.push('/connection');
         this.$emit('update:isAuthenticated', true);
       }).catch((error) => {
         console.error(error);

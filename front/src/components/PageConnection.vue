@@ -2,7 +2,7 @@
     <div class="content">
         <h1>Connectez vous</h1>
         <form @submit.prevent="login">
-            <input type="text" id="name" name="name" v-model="name" placeholder="Nom d'utilisateur">
+            <input type="text" id="name" name="username" v-model="username" placeholder="Nom d'utilisateur">
             <input type="password" id="password" name="password" v-model="password" placeholder="Mot de passe">
             <input class="send" type="submit" value="Envoyer">
         </form>
@@ -29,33 +29,35 @@ export default {
     },
     methods: {
         login() {
-            this.$apollo.mutate({
-                mutation: gql`
-                    mmutation CreateUser {
-                        createUser(username: this.username, password: this.password) {
+            this.$apollo.query({
+                query: gql`
+                    query Login ($username: String!, $password: String!){
+                        login(username: $username, password: $password) {
                             id
                             username
-                            password
-                        }
-                    }
-                `,
+                            }
+                            }
+                            `,
                 variables: {
                     username: this.username,
                     password: this.password
                 }
             }).then(({ data }) => {
-                if (data.signIn.success === false) {
+                // Supposons que votre requête retourne un objet user similaire à ce que faisait la mutation
+                // et que vous avez une logique pour gérer la réponse.
+                console.log(data.login);
+                if (!data.login) {
                     alert('Nom d\'utilisateur ou mot de passe incorrect');
                     this.username = '';
                     this.password = '';
                     return;
                 }
-                console.log(data);
-                this.saveUserDate(data.signIn.user.id, data.signIn.token);
+                // Supposons que vous avez une méthode pour sauvegarder les données de l'utilisateur
+                this.saveUserDate(data.login.id, "VotreTokenIci"); // Remplacer "VotreTokenIci" par la manière dont vous obtenez le token
                 localStorage.setItem('isAuthenticated', true);
-                localStorage.setItem('username', data.signIn.user.username);
+                localStorage.setItem('username', data.login.username);
                 this.$emit('update:isAuthenticated', true);
-                alert(data.signIn.user.username + ' est connecté');
+                alert(data.login.username + ' est connecté');
                 this.$router.push('/').then(() => {
                     location.reload();
                 });
