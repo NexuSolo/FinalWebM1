@@ -34,20 +34,27 @@ describe('UtilisateurService', () => {
     describe('createUser', () => {
         it('should create a new user', async () => {
             const input = 'username';
-            const result = { id: uuidv4(), username: input };
+            const password = 'password';
+            const result = { id: uuidv4(), username: input, password: password };
             jest.spyOn(prismaService.user, 'create').mockResolvedValue(result);
-            expect(await service.createUser(input)).toEqual(result);
+            expect(await service.createUser(input, password)).toEqual(result);
             expect(prismaService.user.create).toHaveBeenCalledWith({
                 data: {
-                    username: input
+                    username: input,
+                    password: password
                 }
             });
             expect(prismaService.user.findUnique).toHaveBeenCalledTimes(1);
         }),
             it('should throw an error if the user already exists', async () => {
                 const input = 'username';
-                jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue({ id: uuidv4(), username: input });
-                expect(await service.createUser(input)).toBe(null);
+                const password = 'password';
+                jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue({
+                    id: uuidv4(),
+                    username: input,
+                    password: password
+                });
+                expect(await service.createUser(input, password)).toBe(null);
                 expect(prismaService.user.findUnique).toHaveBeenCalledWith({
                     where: {
                         username: input
@@ -60,7 +67,7 @@ describe('UtilisateurService', () => {
     describe('getUtilisateurById', () => {
         it('should return a user by id', async () => {
             const input = uuidv4();
-            const result = { id: input, username: 'username' };
+            const result = { id: input, username: 'username', password: 'password' };
             jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(result);
             expect(await service.getUtilisateurById(input)).toEqual(result);
             expect(prismaService.user.findUnique).toHaveBeenCalledWith({
@@ -86,7 +93,8 @@ describe('UtilisateurService', () => {
     describe('getUtilisateurByUsername', () => {
         it('should return a user by username', async () => {
             const input = 'username';
-            const result = { id: uuidv4(), username: input };
+            const password = 'password';
+            const result = { id: uuidv4(), username: input, password: password };
             jest.spyOn(prismaService.user, 'findUnique').mockResolvedValue(result);
             expect(await service.getUtilisateurByUsername(input)).toEqual(result);
             expect(prismaService.user.findUnique).toHaveBeenCalledWith({

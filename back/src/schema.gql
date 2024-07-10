@@ -24,15 +24,18 @@ type Message {
 type Mutation {
   createConversation(user1: String!, user2: String!): Conversation!
   createMessage(conversationId: String!, text: String!, userId: String!): Message!
-  createUser(username: String!): Utilisateur!
+  createUser(password: String!, username: String!): Utilisateur!
 }
 
 type Query {
   getAllConversationsByUser(userId: String!): [Conversation!]!
   getMessageByConversation(conversationId: String!): [Message!]!
+  getUtilisateurByUsername(username: String!): Utilisateur!
+  login(password: String!, username: String!): Utilisateur!
 }
 
 type Utilisateur {
   id: ID!
+  password: String!
   username: String!
 }

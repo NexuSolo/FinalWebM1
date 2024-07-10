@@ -12,7 +12,8 @@ export class MessageResolver {
         @Args('userId') userId: string,
         @Args('conversationId') conversationId: string
     ) {
-        return this.messageService.createMessage(userId, text, conversationId);
+        const result = await this.messageService.createMessage(userId, text, conversationId);
+        return result;
     }
 
     @Query(() => [Message])

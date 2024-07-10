@@ -1,13 +1,14 @@
 import { Process, Processor } from '@nestjs/bull';
 import { Job } from 'bull';
+import { SocketService } from 'src/socket/socket.service';
 
 @Processor('messages')
 export class MessageProcessor {
-    constructor() {}
+    constructor(private readonly socketService: SocketService) {}
 
     @Process()
     async handleJob(job: Job) {
         const message = job.data;
-        console.log(`Traitement du message : ${message.text}`);
+        this.socketService.emitClientEvent(message);
     }
 }

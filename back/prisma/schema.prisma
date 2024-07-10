@@ -16,6 +16,7 @@ datasource db {
 model User {
   id           String         @id @default(cuid())
   username     String         @unique
+  password     String
   conversation Conversation[] @relation(name: "UserConversation")
   messages     Message[]
 }
@@ -31,7 +32,7 @@ model Message {
 }
 
 model Conversation {
-  id        String    @id @default(cuid())
-  users     User[]    @relation("UserConversation")
-  messages  Message[] @relation("ConversationMessages")
+  id       String    @id @default(cuid())
+  users    User[]    @relation("UserConversation")
+  messages Message[] @relation("ConversationMessages")
 }

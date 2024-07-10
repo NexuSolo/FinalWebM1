@@ -2,9 +2,10 @@ import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class Utilisateur {
-    constructor(id: string, username: string) {
+    constructor(id: string, username: string, password: string) {
         this.id = id;
         this.username = username;
+        this.password = password;
     }
 
     @Field(() => ID)
@@ -12,4 +13,7 @@ export class Utilisateur {
 
     @Field(() => String)
     username: string;
+
+    @Field(() => String)
+    password: string;
 }
