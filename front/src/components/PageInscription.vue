@@ -3,6 +3,7 @@
         <h1>Inscrivez vous</h1>
         <form @submit.prevent="register">
             <input type="text" id="name" name="name" v-model="name" placeholder="Nom d'utilisateur">
+            <input type="email" id="email" name="email" v-model="email" placeholder="Email">
             <input type="password" id="password" name="password" v-model="password" placeholder="Mot de passe">
             <input class="send" type="submit" value="Envoyer">
         </form>
@@ -17,6 +18,7 @@ export default {
   data() {
     return {
       name: '',
+      email: '',
       password: ''
     };
   },
@@ -24,15 +26,16 @@ export default {
     register: async function(){
       await this.$apollo.mutate({
         mutation: gql`
-                    mutation CreateUser($username: String!, $password: String!) {
-                        createUser(username: $username, password: $password) {
+                    mutation CreateUser($email: String!, $password: String!, $username: String!) {
+                        createUser(email: $email, password: $password, username: $username) {
+                            email
                             id
                             username
-                            password
                         }
                     }
                 `,
         variables: {
+          email: this.email,
           username: this.name,
           password: this.password
         }
@@ -40,7 +43,7 @@ export default {
         this.$router.push('/connection');
         this.$emit('update:isAuthenticated', true);
       }).catch(() => {
-        alert('Nom d\'utilisateur déjà utilisé');
+        alert('Nom d\'utilisateur ou email déjà utilisé');
       });
     }
   }

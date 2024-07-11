@@ -182,7 +182,7 @@ export default {
 
 .send_img {
     position: relative;
-    height: 100%;
+    height: 2vw;
 }
 
 .sendMessage {
@@ -206,6 +206,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 2vh;
 }
 
 form {
