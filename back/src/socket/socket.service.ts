@@ -7,7 +7,7 @@ export class SocketService {
 
     constructor() {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        this.socket = require('socket.io-client')('ws://localhost:3000');
+        this.socket = require('socket.io-client')('ws://back:3000');
         this.setupSocketEvents();
     }
 
