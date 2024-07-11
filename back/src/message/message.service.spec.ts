@@ -84,7 +84,7 @@ describe('MessageService', () => {
                     id: 'id1'
                 }
             ];
-            const resultOutput = {
+            const output = {
                 authorId: 'id2',
                 id: 'id1',
                 text: 'content',
@@ -97,9 +97,17 @@ describe('MessageService', () => {
                 ],
                 createdAt: new Date()
             };
+            const resultOutput = {
+                authorId: 'id2',
+                id: 'id1',
+                text: 'content',
+                userId: 'id2',
+                conversationId: 'id1',
+                createdAt: new Date()
+            };
             jest.spyOn(utilisateurService, 'getUtilisateurById').mockResolvedValueOnce(useroutput);
             jest.spyOn(conversationService, 'getConversationByUser').mockResolvedValueOnce(conversationOutput);
-            jest.spyOn(prismaService.message, 'create').mockResolvedValueOnce(resultOutput);
+            jest.spyOn(prismaService.message, 'create').mockResolvedValueOnce(output);
             (cacheManagerMock.get as jest.Mock).mockResolvedValueOnce(null);
             (cacheManagerMock.set as jest.Mock).mockResolvedValueOnce([]);
             (messageQueueMock.add as jest.Mock).mockResolvedValueOnce([]);
@@ -121,9 +129,9 @@ describe('MessageService', () => {
                 }
             });
             expect(cacheManagerMock.get).toHaveBeenCalledWith(input.conversationId);
-            expect(cacheManagerMock.set).toHaveBeenCalledWith(input.conversationId, [resultOutput]);
+            expect(cacheManagerMock.set).toHaveBeenCalledWith(input.conversationId, [output]);
             expect(messageQueueMock.add).toHaveBeenCalledWith(resultOutput);
-            expect(res).toEqual(resultOutput);
+            expect(res).toEqual(output);
         });
 
         it('should return null if user does not exist', async () => {

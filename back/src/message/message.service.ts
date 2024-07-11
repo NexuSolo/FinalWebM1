@@ -45,7 +45,8 @@ export class MessageService {
             authorId: result.authorId,
             createdAt: result.createdAt,
             id: result.id,
-            text: result.text
+            text: result.text,
+            userId: result.userId
         };
         await this.messageQueue.add(messageSent);
         return result;
