@@ -12,13 +12,10 @@ export class SocketService {
     }
 
     private setupSocketEvents() {
-        this.socket.on('messageToClient', (data) => {
-            console.log(`Received serverEvent: ${data}`);
-        });
+        this.socket.on('messageToClient', () => {});
     }
 
     emitClientEvent(payload: any) {
-        console.log(payload);
         this.socket.emit('messageToServer', payload);
     }
 }

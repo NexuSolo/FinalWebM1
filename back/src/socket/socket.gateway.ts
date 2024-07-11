@@ -22,17 +22,13 @@ export class WebsocketsGateway implements OnGatewayInit, OnGatewayConnection, On
     @WebSocketServer() server: Server;
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    afterInit(server: Server) {
-        console.log('WebSocket Gateway initialized');
-    }
+    afterInit(server: Server) {}
 
     handleConnection(client: Socket) {
-        console.log(`Client connected: ${client.id}`);
         this.clients.add(client);
     }
 
     handleDisconnect(client: Socket) {
-        console.log(`Client disconnected: ${client.id}`);
         this.clients.delete(client);
     }
 

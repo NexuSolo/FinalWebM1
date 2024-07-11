@@ -6,7 +6,6 @@
             <input type="password" id="password" name="password" v-model="password" placeholder="Mot de passe">
             <input class="send" type="submit" value="Envoyer">
         </form>
-        <!-- router link vers page d'inscription -->
         <RouterLink to="/inscription">Pas encore inscrit ?</RouterLink>
     </div>
 </template>
@@ -43,9 +42,6 @@ export default {
                     password: this.password
                 }
             }).then(({ data }) => {
-                // Supposons que votre requête retourne un objet user similaire à ce que faisait la mutation
-                // et que vous avez une logique pour gérer la réponse.
-                console.log(data.login);
                 if (!data.login) {
                     alert('Nom d\'utilisateur ou mot de passe incorrect');
                     this.username = '';
@@ -106,7 +102,6 @@ input {
 }
 
 .send {
-    /* cacher */
     display: none;
 }
 </style>

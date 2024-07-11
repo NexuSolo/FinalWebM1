@@ -15,10 +15,7 @@ export default {
     },
     methods: {
         logout() {
-            // Supprimer les données de l'utilisateur du stockage local ou de la session
             localStorage.clear();
-
-            // Rediriger l'utilisateur vers la page de connexion
             this.$router.push('/').then(() => {
                 location.reload();
             });
@@ -31,7 +28,7 @@ export default {
 <style scoped>
 
 button{
-    background-color: #e3e3e3; /* Green */
+    background-color: #e3e3e3;
     border: none;
     color: rgb(54, 54, 54);
     text-align: center;

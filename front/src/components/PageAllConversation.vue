@@ -150,16 +150,12 @@ export default {
             }
             this.socket.on(this.currentConversationId, (data) => {
                 this.messages = [...this.messages, data];
-                console.log(data);
             });
-            console.log(this.messages);
         },
     },
     mounted() {
         this.socket = io("ws://localhost:3000");
-        this.socket.on("connect", () => {
-            console.log("Connecté au serveur WebSocket");
-        });
+        this.socket.on("connect", () => {});
         this.getConversationList();
         this.userId = localStorage.getItem('userId');
     },

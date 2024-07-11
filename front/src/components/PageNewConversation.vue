@@ -23,6 +23,10 @@ export default {
   },
   methods: {
     async newConv() {
+      if(this.username == localStorage.getItem('username')) {
+        alert('Vous ne pouvez pas créer une conversation avec vous même');
+        return;
+      }
       await this.$apollo.query({
         query: gql`
                     query GetUtilisateurByUsername($username: String!) {
@@ -66,9 +70,7 @@ export default {
           id: localStorage.getItem('id')
         }
       }).then(() => {
-        console.log("Conversation créée");
       }).catch((error) => {
-        console.log("Erreur lors de la création de la conversation");
         console.error(error);
       });
     }
@@ -108,7 +110,6 @@ input {
 }
 
 .send {
-  /* cacher */
   display: none;
 }
 </style>

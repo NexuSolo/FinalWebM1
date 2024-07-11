@@ -1,7 +1,5 @@
 <template>
   <div class="content">
-    <!-- Rendre le logo cliquable et le lier à l'URL '/conversations' -->
-
     <div v-if="isUserLoggedIn">
       <router-link to="/conversations">
         <img class="logo" src="../assets/mesage.png" alt="">
@@ -10,12 +8,9 @@
     <div v-else>
       <img class="logo" src="../assets/mesage.png" alt="">
     </div>
-
-    <!-- Afficher le bouton de connexion si l'utilisateur n'est pas connecté -->
     <div v-if="!isUserLoggedIn" class="button-connection" @click="goToConnection">
       Se connecter
     </div>
-    <!-- Afficher le message de bienvenue si l'utilisateur est connecté -->
     <div v-else>
       Bonjour {{ userName }}
     </div>
@@ -32,7 +27,6 @@ export default {
     BouttonDeco
   },
   mounted() {
-    console.log(localStorage);
   },
   name: 'PageAccueil',
   data() {
@@ -42,11 +36,9 @@ export default {
   },
   computed: {
     isUserLoggedIn() {
-      // Vérifie si 'userToken' existe dans le localStorage pour déterminer si l'utilisateur est connecté
       return localStorage.getItem('userId') !== null;
     },
     userName() {
-      // Récupère le nom de l'utilisateur du localStorage
       return localStorage.getItem('username');
     }
   },
@@ -55,13 +47,10 @@ export default {
       this.$router.push('/connection');
     },
     logout() {
-      // Supprimer les données de l'utilisateur du stockage local ou de la session
       localStorage.clear();
-
-      // Rediriger l'utilisateur vers la page de connexion
       this.$router.push('/').then(() => {
           location.reload();
-        });
+      });
     }
   }
 }
@@ -70,7 +59,7 @@ export default {
 <style scoped>
 
 .button-connection{
-  background-color: #e3e3e3; /* Green */
+  background-color: #e3e3e3;
   border: none;
   color: rgb(54, 54, 54);
   text-align: center;

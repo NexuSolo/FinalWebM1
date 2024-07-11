@@ -6,7 +6,6 @@
             <input type="password" id="password" name="password" v-model="password" placeholder="Mot de passe">
             <input class="send" type="submit" value="Envoyer">
         </form>
-        <!-- router link vers page d'inscription -->
         <RouterLink to="/connection">Se connecter</RouterLink>
     </div>
 </template>
@@ -17,7 +16,7 @@ import gql from 'graphql-tag';
 export default {
   data() {
     return {
-      name: '', // Ajoutez cette ligne pour définir la propriété `name`
+      name: '',
       password: ''
     };
   },
@@ -79,7 +78,6 @@ input {
 }
 
 .send {
-    /* cacher */
     display: none;
 }
 </style>
