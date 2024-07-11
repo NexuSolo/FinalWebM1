@@ -45,8 +45,12 @@ describe('ConversationService', () => {
             const input = { user1: 'id1', user2: 'id2' };
             const result = { id: 'id1', messages: [], users: [input.user1, input.user2] };
             jest.spyOn(utilisateurService, 'getUtilisateurById')
-                .mockImplementationOnce(() => Promise.resolve(new Utilisateur(input.user1, 'user1', 'password')))
-                .mockImplementationOnce(() => Promise.resolve(new Utilisateur(input.user2, 'user2', 'password')));
+                .mockImplementationOnce(() =>
+                    Promise.resolve(new Utilisateur(input.user1, 'user1', 'password', 'email'))
+                )
+                .mockImplementationOnce(() =>
+                    Promise.resolve(new Utilisateur(input.user2, 'user2', 'password', 'email'))
+                );
             jest.spyOn(prismaService.conversation, 'create').mockResolvedValue(result);
             expect(await service.createConversation(input.user1, input.user2)).toEqual(result);
             expect(utilisateurService.getUtilisateurById).toHaveBeenCalledTimes(2);
@@ -64,7 +68,9 @@ describe('ConversationService', () => {
             const input = { user1: 'id1', user2: 'id2' };
             jest.spyOn(utilisateurService, 'getUtilisateurById')
                 .mockImplementationOnce(() => null)
-                .mockImplementationOnce(() => Promise.resolve(new Utilisateur(input.user2, 'user2', 'password')));
+                .mockImplementationOnce(() =>
+                    Promise.resolve(new Utilisateur(input.user2, 'user2', 'password', 'email'))
+                );
             expect(await service.createConversation(input.user1, input.user2)).toBeNull();
             expect(utilisateurService.getUtilisateurById).toHaveBeenCalledTimes(2);
             expect(utilisateurService.getUtilisateurById).toHaveBeenCalledWith(input.user1);
@@ -74,7 +80,9 @@ describe('ConversationService', () => {
         it('should return null if user2 does not exist', async () => {
             const input = { user1: 'id1', user2: 'id2' };
             jest.spyOn(utilisateurService, 'getUtilisateurById')
-                .mockImplementationOnce(() => Promise.resolve(new Utilisateur(input.user1, 'user1', 'password')))
+                .mockImplementationOnce(() =>
+                    Promise.resolve(new Utilisateur(input.user1, 'user1', 'password', 'email'))
+                )
                 .mockImplementationOnce(() => null);
             expect(await service.createConversation(input.user1, input.user2)).toBeNull();
             expect(utilisateurService.getUtilisateurById).toHaveBeenCalledTimes(2);
@@ -89,7 +97,7 @@ describe('ConversationService', () => {
             const input = 'id1';
             const result = [{ id: 'id1', messages: [], users: ['id1', 'id2'] }];
             jest.spyOn(utilisateurService, 'getUtilisateurById').mockResolvedValueOnce(
-                new Utilisateur(input, 'user1', 'password')
+                new Utilisateur(input, 'user1', 'password', 'email')
             );
             jest.spyOn(prismaService.conversation, 'findMany').mockResolvedValueOnce(result);
             expect(await service.getConversationByUser(input)).toEqual(result);

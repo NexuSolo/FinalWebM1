@@ -27,7 +27,8 @@ export class UtilisateurService {
                 password
             }
         });
-        if (user != null) {
+        console.log('user: ', user);
+        if (user) {
             return user;
         }
         throw new HttpException('Wrong username or password', HttpStatus.BAD_REQUEST);
