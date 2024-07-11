@@ -1,10 +1,8 @@
 <template>
   <div class="content">
-    <h1>Rentrez un nom</h1>
-      <form @submit.prevent="submitForm">
-          <input type="text" id="name" name="name" v-model="name">
-          <input class="send" type="submit" value="Envoyer">
-      </form>
+    <h1>Accueil</h1>
+    <!-- Bouton de déconnexion -->
+    <button @click="logout">Déconnexion</button>
   </div>
 </template>
 
@@ -12,54 +10,29 @@
 export default {
   name: 'PageAccueil',
   data() {
-      return {
-          name: ''
-      }
+    return {
+      name: ''
+    }
+  },
+  mounted() {
+    console.log(localStorage);
   },
   methods: {
-      submitForm() {
-          console.log(this.name);
-      }
+    submitForm() {
+      console.log(this.name);
+    },
+    logout() {
+      // Supprimer les données de l'utilisateur du stockage local ou de la session
+      localStorage.clear(); // ou sessionStorage.clear() selon ce que vous utilisez
+
+      // Rediriger l'utilisateur vers la page de connexion
+      this.$router.push('/connection').then(() => {
+          location.reload();
+        });
+    }
   }
 }
 </script>
 
-  <style scoped>
-
-  .content {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-  }
-
-  h1 {
-    font-size: 2em;
-    margin-bottom: 20px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  input {
-    width: 300px;
-    height: 50px;
-    border: none;
-    border-radius: 5px;
-    margin-bottom: 20px;
-    padding-left: 10px;
-    font-size: 1.5em;
-  }
-
-  .send{
-    /* cacher */
-    display: none;
-  }
-
-
-
-  </style>
+<style scoped>
+</style>

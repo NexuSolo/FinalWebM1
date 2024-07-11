@@ -73,13 +73,13 @@ describe('MessageService', () => {
     describe('createMessage', () => {
         it('should create a new message', async () => {
             const input = { conversationId: 'id1', userId: 'id1', text: 'content' };
-            const useroutput = { id: 'id1', username: 'user1' };
+            const useroutput = { id: 'id1', username: 'user1', password: 'password' };
             const conversationOutput = [
                 {
                     messages: [],
                     users: [
-                        { id: 'id1', username: 'user1' },
-                        { id: 'id2', username: 'user2' }
+                        { id: 'id1', username: 'user1', password: 'password' },
+                        { id: 'id2', username: 'user2', password: 'password' }
                     ],
                     id: 'id1'
                 }
@@ -91,8 +91,8 @@ describe('MessageService', () => {
                 conversationId: 'id1',
                 conversation: [{}],
                 user: [
-                    { id: 'id1', username: 'user1' },
-                    { id: 'id2', username: 'user2' }
+                    { id: 'id1', username: 'user1', password: 'password' },
+                    { id: 'id2', username: 'user2', password: 'password' }
                 ],
                 createdAt: new Date()
             };
@@ -133,7 +133,7 @@ describe('MessageService', () => {
 
         it('should return null if conversation is not in the user conversations', async () => {
             const input = { conversationId: 'id1', userId: 'id1', text: 'content' };
-            const useroutput = { id: 'id1', username: 'user1' };
+            const useroutput = { id: 'id1', username: 'user1', password: 'password' };
             const conversationOutput = [];
             jest.spyOn(utilisateurService, 'getUtilisateurById').mockResolvedValueOnce(useroutput);
             jest.spyOn(conversationService, 'getConversationByUser').mockResolvedValueOnce(conversationOutput);

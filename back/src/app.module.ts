@@ -13,6 +13,8 @@ import { DatabaseModule } from './database/database.module';
 import { PrismaService } from './database/prisma.service';
 import { CacheModule } from '@nestjs/cache-manager';
 import { MessageProcessor } from './message/message.processor';
+import { WebsocketsGatewayModule } from './socket/socket.module';
+import { SocketService } from './socket/socket.service';
 
 @Global()
 @Module({
@@ -37,7 +39,8 @@ import { MessageProcessor } from './message/message.processor';
             autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
             sortSchema: true
         }),
-        DatabaseModule
+        DatabaseModule,
+        WebsocketsGatewayModule
     ],
     controllers: [],
     providers: [
@@ -48,7 +51,8 @@ import { MessageProcessor } from './message/message.processor';
         UtilisateurResolver,
         ConversationResolver,
         ConversationService,
-        PrismaService
+        PrismaService,
+        SocketService
     ]
 })
 export class AppModule {}

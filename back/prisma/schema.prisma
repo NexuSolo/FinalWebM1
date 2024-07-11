@@ -16,6 +16,7 @@ datasource db {
 model User {
   id           String         @id @default(cuid())
   username     String         @unique
+  password     String
   conversation Conversation[] @relation(name: "UserConversation")
   messages     Message[]
 }
@@ -24,6 +25,7 @@ model Message {
   id             String       @id @default(cuid())
   text           String
   createdAt      DateTime     @default(now())
+  authorId       String
   user           User         @relation(fields: [userId], references: [id])
   userId         String
   conversationId String
@@ -31,7 +33,7 @@ model Message {
 }
 
 model Conversation {
-  id        String    @id @default(cuid())
-  users     User[]    @relation("UserConversation")
-  messages  Message[] @relation("ConversationMessages")
+  id       String    @id @default(cuid())
+  users    User[]    @relation("UserConversation")
+  messages Message[] @relation("ConversationMessages")
 }
