@@ -43,14 +43,19 @@
         </div>
     </div>
 
+    <BoutonDeco />
+
 </template>
 
 <script>
 import gql from 'graphql-tag';
 import { io } from "socket.io-client";
+import BoutonDeco from './BoutonDeco.vue';
 
 export default {
-    
+    components: {
+        BoutonDeco
+    },
     data() {
         return {
             userId: '',

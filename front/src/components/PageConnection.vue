@@ -58,7 +58,7 @@ export default {
                 localStorage.setItem('userId', data.login.id);
                 this.$emit('update:isAuthenticated', true);
                 alert(data.login.username + ' est connecté');
-                this.$router.push('/conversations').then(() => {
+                this.$router.push('/').then(() => {
                     location.reload();
                 });
             }).catch(() => {
