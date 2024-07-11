@@ -73,26 +73,27 @@ describe('MessageService', () => {
     describe('createMessage', () => {
         it('should create a new message', async () => {
             const input = { conversationId: 'id1', userId: 'id1', text: 'content' };
-            const useroutput = { id: 'id1', username: 'user1', password: 'password' };
+            const useroutput = { id: 'id1', username: 'user1', password: 'password', email: 'email1@test.com' };
             const conversationOutput = [
                 {
                     messages: [],
                     users: [
-                        { id: 'id1', username: 'user1', password: 'password' },
-                        { id: 'id2', username: 'user2', password: 'password' }
+                        { id: 'id1', username: 'user1', password: 'password', email: 'email1@test.com' },
+                        { id: 'id2', username: 'user2', password: 'password', email: 'email2@test.com' }
                     ],
                     id: 'id1'
                 }
             ];
             const resultOutput = {
+                authorId: 'id2',
                 id: 'id1',
                 text: 'content',
                 userId: 'id2',
                 conversationId: 'id1',
                 conversation: [{}],
                 user: [
-                    { id: 'id1', username: 'user1', password: 'password' },
-                    { id: 'id2', username: 'user2', password: 'password' }
+                    { id: 'id1', username: 'user1', password: 'password', email: 'email1@test.com' },
+                    { id: 'id2', username: 'user2', password: 'password', email: 'email2@test.com' }
                 ],
                 createdAt: new Date()
             };
@@ -111,7 +112,8 @@ describe('MessageService', () => {
                 data: {
                     userId: input.userId,
                     text: input.text,
-                    conversationId: input.conversationId
+                    conversationId: input.conversationId,
+                    authorId: input.userId
                 },
                 include: {
                     conversation: true,
@@ -133,7 +135,7 @@ describe('MessageService', () => {
 
         it('should return null if conversation is not in the user conversations', async () => {
             const input = { conversationId: 'id1', userId: 'id1', text: 'content' };
-            const useroutput = { id: 'id1', username: 'user1', password: 'password' };
+            const useroutput = { id: 'id1', username: 'user1', password: 'password', email: 'email1@test.com' };
             const conversationOutput = [];
             jest.spyOn(utilisateurService, 'getUtilisateurById').mockResolvedValueOnce(useroutput);
             jest.spyOn(conversationService, 'getConversationByUser').mockResolvedValueOnce(conversationOutput);
@@ -146,10 +148,11 @@ describe('MessageService', () => {
             const input = 'id1';
             const result = [
                 {
+                    conversationId: 'id1',
+                    authorId: 'id2',
                     id: 'id1',
                     text: 'content',
                     userId: 'id2',
-                    conversationId: 'id1',
                     user: [
                         { id: 'id1', username: 'user1' },
                         { id: 'id2', username: 'user2' }
@@ -190,6 +193,7 @@ describe('MessageService', () => {
             const input = 'id1';
             const result = [
                 {
+                    authorId: 'id2',
                     id: 'id1',
                     text: 'content',
                     userId: 'id2',
@@ -203,6 +207,7 @@ describe('MessageService', () => {
             ];
             (cacheManagerMock.get as jest.Mock).mockResolvedValueOnce([
                 {
+                    authorId: 'id2',
                     id: 'id1',
                     text: 'content',
                     userId: 'id2',

@@ -6,8 +6,8 @@
                     {{ this.getUsername(conversation) }}
                 </div>
             </div>
-            <div class="nomConversation">
-                <RouterLink class="new" to="/new">+</RouterLink>
+            <div class="nomConversation" @click=goToNew()>
+                +
             </div>
 
         </div>
@@ -73,6 +73,9 @@ export default {
         }
     },
     methods: {
+        goToNew(){
+            this.$router.push('/new');
+        },
         getUsername(conversation) {
             return conversation.users[1].id === this.userId ? conversation.users[0].username : conversation.users[1].username;
         },
@@ -129,9 +132,6 @@ export default {
                 }).then(() => {
                     this.newMessage = '';
                     this.getConversationList();
-                    // this.$router.push('/conversations').then(() => {
-                    //     location.reload();
-                    // });
                 }).catch((error) => {
                     console.error(error);
                 });

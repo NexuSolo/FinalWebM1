@@ -45,9 +45,8 @@ export default {
         this.$router.push('/conversations').then(() => {
             location.reload();
         });
-      }).catch((error) => {
-        console.log("Utilisateur introuvable");
-        console.error(error);
+      }).catch(() => {
+        alert('Nom d\'utilisateur inexistant');
       });
     },
     async createNewConv(nouveauContact) {
