@@ -18,6 +18,13 @@ services:
       timeout: 5s
       retries: 5
 
+  front:
+    image: nexusolo/vue:latest
+    ports:
+      - "8081:8080"
+    depends_on:
+      - back
+
   postgres:
     image: postgres:latest
     environment:
