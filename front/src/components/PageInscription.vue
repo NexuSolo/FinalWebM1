@@ -40,8 +40,8 @@ export default {
       }).then(() => {
         this.$router.push('/connection');
         this.$emit('update:isAuthenticated', true);
-      }).catch((error) => {
-        console.error(error);
+      }).catch(() => {
+        alert('Nom d\'utilisateur déjà utilisé');
       });
     }
   }

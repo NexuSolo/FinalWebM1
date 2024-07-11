@@ -52,8 +52,7 @@ export default {
                     this.password = '';
                     return;
                 }
-                // Supposons que vous avez une méthode pour sauvegarder les données de l'utilisateur
-                this.saveUserDate(data.login.id, "VotreTokenIci"); // Remplacer "VotreTokenIci" par la manière dont vous obtenez le token
+                this.saveUserDate(data.login.id, "VotreTokenIci");
                 localStorage.setItem('isAuthenticated', true);
                 localStorage.setItem('username', data.login.username);
                 localStorage.setItem('userId', data.login.id);
@@ -62,8 +61,8 @@ export default {
                 this.$router.push('/conversations').then(() => {
                     location.reload();
                 });
-            }).catch((error) => {
-                console.error(error);
+            }).catch(() => {
+                alert('Nom d\'utilisateur ou mot de passe incorrect');  
             });
         },
         saveUserDate(id, token) {
