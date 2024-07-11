@@ -25,7 +25,7 @@ type Message {
 type Mutation {
   createConversation(user1: String!, user2: String!): Conversation!
   createMessage(conversationId: String!, text: String!, userId: String!): Message!
-  createUser(password: String!, username: String!): Utilisateur!
+  createUser(email: String!, password: String!, username: String!): Utilisateur!
 }
 
 type Query {
@@ -36,6 +36,7 @@ type Query {
 }
 
 type Utilisateur {
+  email: String!
   id: ID!
   password: String!
   username: String!
